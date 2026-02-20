@@ -35,6 +35,11 @@ export default function AppNavigator() {
                     component={HomeScreen}
                     options={{ headerShown: false }}
                 />
+                <Stack.Screen
+                    name="LocationPicker"
+                    component={require('../../features/map/presentation/screens/LocationPickerScreen').default}
+                    options={{ headerShown: false }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );

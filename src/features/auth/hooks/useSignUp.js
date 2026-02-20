@@ -45,9 +45,9 @@ export const useSignUp = (navigation) => {
         // 2. Call Global Action
         const success = await signUp(fullName, phoneNumber, email, password);
 
-        // 3. Handle Navigation on Success (Assuming Home is the target)
+        // 3. Handle Navigation on Success (Assuming LocationPicker is the target)
         if (success) {
-            navigation.replace('Home');
+            navigation.replace('LocationPicker');
         }
     };
 

@@ -8,6 +8,7 @@ export const useUserStore = create((set) => ({
     isAuthenticated: false,
     hasSeenOnboarding: false,
     currentSlideIndex: 0,
+    userLocation: null, // Global location storage
 
     // Auth UI State (Global)
     isLoading: false,
@@ -48,4 +49,5 @@ export const useUserStore = create((set) => ({
     logout: () => set({ user: null, isAuthenticated: false }),
     completeOnboarding: () => set({ hasSeenOnboarding: true }),
     setCurrentSlideIndex: (index) => set({ currentSlideIndex: index }),
+    setUserLocation: (location) => set({ userLocation: location }),
 }));

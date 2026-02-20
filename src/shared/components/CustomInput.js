@@ -5,7 +5,7 @@ import { moderateScale, verticalScale } from '../../core/utils/responsive';
 import Checkbox from 'expo-checkbox';
 import { EyeIcon, EyeOffIcon } from '../../core/utils/SVGIcons';
 
-export const CustomInput = ({
+export const CustomInput = React.forwardRef(({
     label,
     value,
     onChangeText,
@@ -13,15 +13,20 @@ export const CustomInput = ({
     secureTextEntry,
     error,
     keyboardType = 'default',
-    isPassword
-}) => {
+    isPassword,
+    rightIcon,
+    onRightIconPress,
+    containerStyle,
+    style,
+    ...props
+}, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
 
     const checkSecure = secureTextEntry && !isVisible;
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, containerStyle]}>
             {label && (
                 <Text style={styles.label}>
                     {label} <Text style={{ color: 'red' }}>*</Text>
@@ -31,9 +36,11 @@ export const CustomInput = ({
             <View style={[
                 styles.inputContainer,
                 isFocused && styles.focusedInput,
-                error && styles.errorInput
+                error && styles.errorInput,
+                style // Apply GooglePlacesAutocomplete style to the outer wrapper
             ]}>
                 <TextInput
+                    ref={ref}
                     style={styles.input}
                     value={value}
                     onChangeText={onChangeText}
@@ -44,6 +51,7 @@ export const CustomInput = ({
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     autoCapitalize="none"
+                    {...props}
                 />
 
                 {isPassword && (
@@ -51,12 +59,23 @@ export const CustomInput = ({
                         {isVisible ? <EyeOffIcon /> : <EyeIcon />}
                     </TouchableOpacity>
                 )}
+
+                {rightIcon && (
+                    <TouchableOpacity
+                        onPress={onRightIconPress}
+                        style={styles.eyeBtn}
+                        disabled={!onRightIconPress}
+                        activeOpacity={onRightIconPress ? 0.8 : 1}
+                    >
+                        {rightIcon}
+                    </TouchableOpacity>
+                )}
             </View>
 
             {error && <Text style={styles.errorText}>{error}</Text>}
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -72,9 +91,9 @@ const styles = StyleSheet.create({
         height: verticalScale(50),
         borderWidth: 1,
         borderColor: '#E0E0E0',
-        borderRadius: moderateScale(12),
+        borderRadius: moderateScale(15),
         paddingHorizontal: moderateScale(15),
-        backgroundColor: '#fff', // Design uses white/transparent
+        backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
     },
